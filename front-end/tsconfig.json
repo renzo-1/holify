@@ -20,6 +20,6 @@
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true
   },
-  "include": ["src"],
+  "include": ["src", "src/web3/abi.ts"],
   "references": [{ "path": "./tsconfig.node.json" }]
 }

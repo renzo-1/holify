@@ -1,5 +1,5 @@
 import Home from "./Home";
-import Assign from "./Assign";
+import Create from "./Create";
 import Verify from "./Verify";
 
-export { Home, Assign, Verify };
+export { Home, Create, Verify };

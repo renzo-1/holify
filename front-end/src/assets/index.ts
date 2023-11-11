@@ -1,3 +1,4 @@
-import hero from "./hero.png"
+import hero from "./hero.png";
+import excelSample from "./excelSample.png";
 
-export {hero}
+export { hero, excelSample };

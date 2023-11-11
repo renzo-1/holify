@@ -1,2 +1,4 @@
 import Nav from "./Nav";
-export {Nav}
+import Tutorial from "./Tutorial";
+import FileForm from "./FileForm";
+export {Nav, Tutorial, FileForm}
