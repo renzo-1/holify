@@ -32,3 +32,7 @@ interface School {
   dean: string;
   school: string;
 }
+
+interface Certificate extends School, Student{
+  tokenId: string;
+}
