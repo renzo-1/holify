@@ -84,6 +84,18 @@ body,
     transform: translate3d(0, 0, 0);
   }
 }
+
+#tokenId::-webkit-outer-spin-button,
+#tokenId::-webkit-inner-spin-button {
+  /* display: none; <- Crashes Chrome on hover */
+  -webkit-appearance: none;
+  margin: 0; /* <-- Apparently some margin are still there even though it's hidden */
+}
+
+#tokenId {
+  appearance: textfield; /* Firefox */
+}
+
 @layer base {
   h1 {
     @apply gradient-text font-extrabold text-4xl md:text-5xl lg:text-7xl lg:leading-normal;

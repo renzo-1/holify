@@ -8,9 +8,9 @@ const Tutorial = ({
 }) => {
   return (
     <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2  px-10 w-full h-screen border-red-500 flex justify-center items-center flex-col">
-      <div className="bg-primary rounded-lg z-20 py-8 px-12">
+      <div className="bg-primary rounded-lg z-20 py-8 px-12 text-left">
         <div className="flex justify-between items-center mb-4">
-          <h2 className="font-bold text-left ">
+          <h2 className="font-bold text-left">
             Format for creating the spreadsheet
           </h2>
           <button onClick={() => setIsTutorial(false)}>
@@ -27,9 +27,16 @@ const Tutorial = ({
 
         <img
           src={excelSample}
-          className="w-full max-w-[400px] md:max-w-[800px] lg:max-w-[800px] xl:max-w-[1100px] 2xl:max-w-[1300px] drop-shadow-md"
+          className="w-full mb-4 max-w-[400px] md:max-w-[800px] lg:max-w-[800px] xl:max-w-[1100px] 2xl:max-w-[1300px] drop-shadow-md"
           alt="excel sample"
         />
+        <a
+          download="graduatees.xlsx"
+          href="/graduates.xlsx"
+          className="underline"
+        >
+          Download sample
+        </a>
         <ol className="list-decimal text-left pl-4 mt-8">
           <li>
             Please ensure that you follow the predefined headers; they are

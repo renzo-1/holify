@@ -1,4 +1,11 @@
-import { useRef, ChangeEvent, useState, useEffect } from "react";
+import {
+  useRef,
+  ChangeEvent,
+  useState,
+  useEffect,
+  Dispatch,
+  SetStateAction,
+} from "react";
 import { utils, read } from "xlsx";
 import { useWeb3Context } from "../contexts/Web3";
 import { getContract } from "../web3/utils";
@@ -17,35 +24,24 @@ const excelDateToDDMonthYY = (serialDate: number): string => {
 
   return formattedDate;
 };
-const FileForm = () => {
+const CreateForm = ({
+  setGraduates,
+}: {
+  setGraduates: Dispatch<SetStateAction<Certificate[] | undefined>>;
+}) => {
   const [uploadedFile, setUploadedFile] = useState<File | undefined>();
-  const [graduates, setGraduates] = useState<Student[]>();
+  const [students, setStudents] = useState<Student[]>();
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [school, setSchool] = useState<School>();
   const { holifyAccount } = useWeb3Context() as Web3Context;
   const inputFileRef = useRef<HTMLInputElement | null>(null);
   const formRef = useRef<HTMLFormElement>(null);
 
-  //   useEffect(() => {
-  //     const newTokenListener = async () => {
-  //       const contract = await getContract();
-
-  //       contract.events
-  //         .MintedCert({
-  //           fromBlock: "latest",
-  //         })
-  //         .on("data", function (event) {
-  //           console.log("event", event); // same results as the optional callback above
-  //         });
-  //     };
-  //     newTokenListener();
-  //   }, []);
-
   const newTokenListener = async () => {
     const contract = await getContract();
 
     return new Promise((resolve) => {
-      let id: any;
+      let id: string;
 
       contract.events
         .MintedCert({
@@ -60,34 +56,46 @@ const FileForm = () => {
   const handleMint = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setIsLoading(true);
-    try {
-      const contract = await getContract();
+    if (students) {
+      try {
+        const contract = await getContract();
+        const graduates: Certificate[] = [];
+        for (let student of students) {
+          const studentData = {
+            studentName: student.studentName.toString(),
+            studentNum: student.studentNum.toString(),
+            program: student.program.toString(),
+            specialization: student.specialization || "",
+            gradDate: excelDateToDDMonthYY(
+              parseInt(student.gradDate)
+            ).toString(),
+          };
 
-      for (let graduate of graduates!) {
-        console.log(
-          graduate.studentName.toString(),
-          graduate.program.toString(),
-          graduate.studentNum.toString(),
-          excelDateToDDMonthYY(parseInt(graduate.gradDate)).toString(),
-          graduate.specialization || ""
-        );
-        let create = await contract.methods
-          .mint(
-            graduate.studentName.toString(),
-            graduate.program.toString(),
-            graduate.studentNum.toString(),
-            excelDateToDDMonthYY(parseInt(graduate.gradDate)).toString(),
-            graduate.specialization || ""
-          )
-          .send({ from: holifyAccount, gas: "1000000" });
-        const newToken = await newTokenListener();
-        console.log(newToken);
+          await contract.methods
+            .mint(
+              studentData.studentName,
+              studentData.studentNum,
+              studentData.program,
+              studentData.specialization,
+              studentData.gradDate
+            )
+            .send({ from: holifyAccount, gas: "1000000" });
+          const newToken = (await newTokenListener()) as string;
+
+          graduates.push({
+            ...studentData,
+            tokenId: newToken,
+            dean: school?.dean!,
+            president: school?.president!,
+            school: school?.school!,
+          });
+        }
+        setGraduates(graduates!);
+        handleRemoveFile();
+      } catch (e) {
+        console.error(e);
+        //   alert("You are not authorised to create a Certificate");
       }
-
-      // alert("Certificate for Student " + sname.value + " created Successfully!");
-    } catch (e) {
-      console.error(e);
-      //   alert("You are not authorised to create a Certificate");
     }
     setIsLoading(false);
   };
@@ -96,6 +104,7 @@ const FileForm = () => {
     /*Collecting node-element and performing click*/
     inputFileRef.current?.click();
   };
+
   const readUploadFile = (e: ChangeEvent<HTMLInputElement>) => {
     e.preventDefault();
     // console.log(e.target.files);
@@ -131,7 +140,7 @@ const FileForm = () => {
             gradDate: row.gradDate,
           };
         });
-        setGraduates(gradsArr);
+        setStudents(gradsArr);
       };
 
       reader.readAsArrayBuffer(e.target.files[0]);
@@ -182,6 +191,7 @@ const FileForm = () => {
       </div>
       <form ref={formRef} onSubmit={handleMint}>
         <input
+          required
           type="file"
           accept=".xlsx "
           // multiple
@@ -189,14 +199,14 @@ const FileForm = () => {
           onChange={readUploadFile}
           className="hidden"
         />
-        {graduates?.length! > 0 && (
+        {students?.length! > 0 && (
           <button
             disabled={isLoading}
             className={`${
               isLoading ? "bg-gray-500" : "bg-green-700"
             } cursor-pointer  rounded-lg shadow-md px-4 py-2`}
           >
-            Mint
+            Generate diplomas
           </button>
         )}
       </form>
@@ -204,4 +214,4 @@ const FileForm = () => {
   );
 };
 
-export default FileForm;
+export default CreateForm;

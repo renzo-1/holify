@@ -1,8 +1,4 @@
-import React, {
-  Dispatch,
-  SetStateAction,
-  useLayoutEffect,
-} from "react";
+import React, { Dispatch, SetStateAction, useLayoutEffect } from "react";
 import { Pages } from "../constants";
 import { connect2Metamask, getHolifyAccAdd } from "../web3/utils";
 import { useWeb3Context } from "../contexts/Web3";
@@ -20,10 +16,12 @@ const Nav = ({
       setHolifyAccount(accounts[0]);
     }
 
-    // initialize account on reload
+    // initialize account on reload, if the account is already connected with metamask
     const checkAccount = async () => {
-      const add = await getHolifyAccAdd();
-      setHolifyAccount(add);
+      if (await window.ethereum._metamask.isUnlocked()) {
+        const add = await getHolifyAccAdd();
+        setHolifyAccount(add);
+      }
     };
     checkAccount();
   }, []);

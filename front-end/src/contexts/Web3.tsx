@@ -3,7 +3,6 @@ import React, {
   useContext,
   FC,
   ReactNode,
-  useMemo,
   useState,
 } from "react";
 const web3Context = createContext<Web3Context | undefined>(undefined);
@@ -20,7 +19,7 @@ const Web3Provider: FC<AppProps> = ({ children }) => {
   const [holifyAccount, setHolifyAccount] = useState<string>();
 
   return (
-    <web3Context.Provider value={{  holifyAccount, setHolifyAccount }}>
+    <web3Context.Provider value={{ holifyAccount, setHolifyAccount }}>
       {children}
     </web3Context.Provider>
   );

@@ -1,0 +1,8 @@
+import path from "node:path";
+import fs from "node:fs";
+pdfjs.GlobalWorkerOptions.workerSrc =
+  "https://cdn.bootcss.com/pdf.js/2.2.228/pdf.worker.js";
+const pdfjsDistPath = path.dirname(require.resolve("pdfjs-dist/package.json"));
+const pdfWorkerPath = path.join(pdfjsDistPath, "build", "pdf.worker.js");
+
+fs.copyFileSync(pdfWorkerPath, "./dist/pdf.worker.js");

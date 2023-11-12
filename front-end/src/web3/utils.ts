@@ -1,7 +1,7 @@
 import Web3Eth from "web3-eth";
 import { contractABI } from "./abi";
 import Contract from "web3-eth-contract";
-const contractAddress = "0xdB87A44C942F78449e9E47b35541BbFC4984d67e";
+const contractAddress = "0x57354D9309e6268133Ae53F2b21700352Ddceb6D";
 const contractProvider = "HTTP://127.0.0.1:8545";
 
 export const getHolifyAccAdd = async () => {
