@@ -10,7 +10,7 @@ contract Certification is ERC721, Ownable{
   event MintedCert(uint256 indexed _tokenId);
 
   struct certificate {
-    string name;
+    string studentName;
     string studentNum;
     string program;
     string specialization;
@@ -22,22 +22,24 @@ contract Certification is ERC721, Ownable{
   constructor(string memory name, string memory symbol, address _owner) ERC721(name, symbol) Ownable(_owner) {
   }
   
-  function verify( uint256 certTokenId ) public view returns(string memory name, string memory program, string memory gradDate, string memory specialization) {
+  function verify( uint256 certTokenId ) public view returns(string memory studentName, string memory studentNum, string memory program, string memory gradDate, string memory specialization) {
     certificate memory _certificate = student[certTokenId];
-    name = _certificate.name;
+
+    studentName = _certificate.studentName;
+    studentNum = _certificate.studentNum;
     program = _certificate.program;
     gradDate = _certificate.gradDate;
     specialization = _certificate.specialization;
-    return (name, program, gradDate, specialization);
+
+    return (studentName, studentNum, program, specialization, gradDate);
   }
 
-  function mint(string memory _name,  string memory _program, string memory _studentNum, string memory _gradDate, string memory _specialization) public  payable onlyOwner    returns(uint256 tokenID) {
+  function mint(string memory _name, string memory _studentNum, string memory _program,  string memory _specialization,  string memory _gradDate) public  payable onlyOwner {
     uint256 certTokenId = tokenIdCounter;
-    certificate memory _certificate = certificate({ name: _name, studentNum: _studentNum, program: _program, gradDate: _gradDate, specialization: _specialization});
+    certificate memory _certificate = certificate({ studentName: _name, studentNum: _studentNum, program: _program, specialization: _specialization,  gradDate: _gradDate});
     student.push(_certificate);
     _mint(msg.sender, certTokenId);
     tokenIdCounter++;
     emit MintedCert(certTokenId);
-    return certTokenId;
   }
 }
