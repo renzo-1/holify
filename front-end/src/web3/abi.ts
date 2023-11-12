@@ -341,17 +341,12 @@ export const contractABI = [
       },
       {
         internalType: "string",
-        name: "_program",
-        type: "string",
-      },
-      {
-        internalType: "string",
         name: "_studentNum",
         type: "string",
       },
       {
         internalType: "string",
-        name: "_gradDate",
+        name: "_program",
         type: "string",
       },
       {
@@ -359,16 +354,15 @@ export const contractABI = [
         name: "_specialization",
         type: "string",
       },
-    ],
-    name: "mint",
-    outputs: [
       {
-        internalType: "uint256",
-        name: "tokenID",
-        type: "uint256",
+        internalType: "string",
+        name: "_gradDate",
+        type: "string",
       },
     ],
-    stateMutability: "nonpayable",
+    name: "mint",
+    outputs: [],
+    stateMutability: "payable",
     type: "function",
   },
   {
@@ -504,7 +498,7 @@ export const contractABI = [
     outputs: [
       {
         internalType: "string",
-        name: "name",
+        name: "studentName",
         type: "string",
       },
       {
@@ -630,7 +624,12 @@ export const contractABI = [
     outputs: [
       {
         internalType: "string",
-        name: "name",
+        name: "studentName",
+        type: "string",
+      },
+      {
+        internalType: "string",
+        name: "studentNum",
         type: "string",
       },
       {
