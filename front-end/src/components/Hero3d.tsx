@@ -34,7 +34,7 @@ function Diploma(props: JSX.IntrinsicElements["group"]) {
         receiveShadow
         geometry={nodes.diploma1.geometry}
         material={nodes.diploma1.material}
-        scale={-10}
+        scale={0.12}
       />
     </group>
   );
