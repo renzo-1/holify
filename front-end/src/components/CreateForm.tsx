@@ -53,6 +53,7 @@ const CreateForm = ({
         });
     });
   };
+  
   const handleMint = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setIsLoading(true);
@@ -80,6 +81,7 @@ const CreateForm = ({
               studentData.gradDate
             )
             .send({ from: holifyAccount, gas: "1000000" });
+
           const newToken = (await newTokenListener()) as string;
 
           graduates.push({

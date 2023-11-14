@@ -9,7 +9,7 @@ function App() {
 
   return (
     <Web3Provider>
-      <div className="px-4 py-7 w-full h-full overflow-hidden relative">
+      <div className="w-full h-full max-w-[80%] mx-auto overflow-hidden relative">
         <Nav setCurrPage={setCurrPage} />
         <Home currPage={currPage} />
         <Create currPage={currPage} />

@@ -34,7 +34,10 @@ const VerifyForm = ({
   };
   return (
     <>
-      <form className="w-full space-y-5 md:space-x-5" onSubmit={handleSubmit}>
+      <form
+        className="w-full md:space-x-5 space-y-5 md:space-y-0 flex flex-col md:flex-row justify-center items-center"
+        onSubmit={handleSubmit}
+      >
         <input
           id="tokenId"
           onChange={handleChange}
@@ -49,7 +52,7 @@ const VerifyForm = ({
           disabled={isLoading}
           className={`${
             isLoading ? "bg-gray-500" : "bg-green-700"
-          } cursor-pointer  rounded-lg shadow-md px-4 py-2`}
+          } cursor-pointer shadow-md px-2 py-1 md:px-4 md:py-2`}
         >
           Verifiy
         </button>

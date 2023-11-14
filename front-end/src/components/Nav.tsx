@@ -1,4 +1,9 @@
-import React, { Dispatch, SetStateAction, useLayoutEffect } from "react";
+import React, {
+  Dispatch,
+  SetStateAction,
+  useLayoutEffect,
+  useState,
+} from "react";
 import { Pages } from "../constants";
 import { connect2Metamask, getHolifyAccAdd } from "../web3/utils";
 import { useWeb3Context } from "../contexts/Web3";
@@ -9,7 +14,7 @@ const Nav = ({
   setCurrPage: Dispatch<SetStateAction<Pages>>;
 }) => {
   const { holifyAccount, setHolifyAccount } = useWeb3Context() as Web3Context;
-
+  const [isShowAcc, setIsShowAcc] = useState<Boolean>(false);
   useLayoutEffect(() => {
     window.ethereum.on("accountsChanged", handleAccountsChanged);
     function handleAccountsChanged(accounts: string[]) {
@@ -19,17 +24,16 @@ const Nav = ({
     // initialize account on reload, if the account is already connected with metamask
     const checkAccount = async () => {
       if (await window.ethereum._metamask.isUnlocked()) {
-        const add = await getHolifyAccAdd();
-        setHolifyAccount(add);
+        connect2Metamask().then((address) => setHolifyAccount(address));
       }
     };
     checkAccount();
   }, []);
 
   return (
-    <nav className="absolute w-full top-0 left-0 px-4 md:px-6 lg:px-8 xl:px-24 py-7 lg:py-12 z-[9999]">
+    <nav className="absolute w-full top-0 left-0 py-7 lg:py-12 z-[9999]">
       <ul className="flex flex-col md:flex-row justify-between items-center">
-        <ul className="flex gap-x-4 lg:gap-x-6  justify-center items-center">
+        <ul className="flex justify-center items-center mb-10 md:mb-0  gap-x-7 md:gap-x-10">
           <li
             className="font-bold cursor-pointer text-sm md:text-sm lg:text-base xl:text-2xl"
             onClick={() => setCurrPage(Pages.Home)}
@@ -37,7 +41,7 @@ const Nav = ({
             Holify
           </li>
           <li
-            className="text-sm cursor-pointer md:text-sm xl:text-xl md:ml-4 lg:ml-6 xl:ml-8 2xl:ml-10"
+            className="text-sm cursor-pointer md:text-sm xl:text-xl"
             onClick={() => setCurrPage(Pages.Create)}
           >
             Create
@@ -59,9 +63,29 @@ const Nav = ({
             Metamask
           </li>
         ) : (
-          <h2 className="mt-10 md:mt-0 text-center md:text-left max-w-[240px] md:max-w-full text-ellipsis overflow-hidden text-base lg:text-lg xl:text-xl">
-            <span className="font-bold">Account:</span> {holifyAccount}
-          </h2>
+          <li className="">
+            <button onClick={() => setIsShowAcc((prev) => !prev)}>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="currentColor"
+                className="bi bi-person-circle w-5 lg:w-7"
+                viewBox="0 0 16 16"
+              >
+                <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z" />
+                <path
+                  fillRule="evenodd"
+                  d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1z"
+                />
+              </svg>
+            </button>
+            {isShowAcc && (
+              <div className="absolute top-100 left-100 -translate-x-1/2 md:-translate-x-full w-fit z-100 bg-primary shadow-lg py-2 px-4">
+                <h2 className="md:text-left md:max-w-full md:whitespace-nowrap break-words max-w-[200px] text-base lg:text-lg xl:text-xl">
+                  <b>Account:</b> {holifyAccount}
+                </h2>
+              </div>
+            )}
+          </li>
         )}
       </ul>
     </nav>

@@ -13,7 +13,7 @@ const Create = ({ currPage }: { currPage: Pages }) => {
       unmountOnExit={true}
     >
       <div className="absolute left-0 top-0 px-4 w-full h-full text-center flex flex-col justify-center items-center gap-y-7 md:gap-y-8">
-        <h1>Drop your data here</h1>
+        <h1>Create diplomas</h1>
 
         {graduates ? (
           <PDF graduates={graduates} setGraduates={setGraduates} />

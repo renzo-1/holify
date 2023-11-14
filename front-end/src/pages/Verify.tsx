@@ -13,7 +13,7 @@ const Verify = ({ currPage }: { currPage: Pages }) => {
       unmountOnExit={true}
     >
       <div className="w-full h-full text-center flex flex-col justify-center items-center gap-y-7 ">
-        <h1>Enter a token ID</h1>
+        <h1>Verify a Diploma</h1>
         <VerifyForm setVerifiedStudent={setVerifiedStudent} />
         {verifiedStudent && (
           <VerificationResult verifiedStudent={verifiedStudent} />

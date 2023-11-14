@@ -8,9 +8,9 @@ const Tutorial = ({
 }) => {
   return (
     <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2  px-10 w-full h-screen border-red-500 flex justify-center items-center flex-col">
-      <div className="bg-primary rounded-lg z-20 py-8 px-12 text-left">
+      <div className="bg-primary rounded-lg z-20 py-8 px-12 text-left drop-shadow-lg">
         <div className="flex justify-between items-center mb-4">
-          <h2 className="font-bold text-left">
+          <h2 className="font-bold text-left text-xs md:text-base">
             Format for creating the spreadsheet
           </h2>
           <button onClick={() => setIsTutorial(false)}>
@@ -33,33 +33,37 @@ const Tutorial = ({
         <a
           download="graduatees.xlsx"
           href="/graduates.xlsx"
-          className="underline"
+          className="underline text-xs md:text-base"
         >
           Download sample
         </a>
         <ol className="list-decimal text-left pl-4 mt-8">
-          <li>
+          <li className="text-xs md:text-base">
+            When creating certificate, ensure that the connected account is from
+            Holify account.
+          </li>
+          <li className="text-xs md:text-base">
             Please ensure that you follow the predefined headers; they are
             constants:
           </li>
           <ul className="list-disc pl-6">
-            <li>president</li>
-            <li>dean</li>
-            <li>school</li>
-            <li>gradDate</li>
-            <li>studentName</li>
-            <li>studentNum</li>
-            <li>program</li>
-            <li>specialization</li>
+            <li className="text-xs md:text-base">president</li>
+            <li className="text-xs md:text-base">dean</li>
+            <li className="text-xs md:text-base">school</li>
+            <li className="text-xs md:text-base">gradDate</li>
+            <li className="text-xs md:text-base">studentName</li>
+            <li className="text-xs md:text-base">studentNum</li>
+            <li className="text-xs md:text-base">program</li>
+            <li className="text-xs md:text-base">specialization</li>
           </ul>
-          <li>
+          <li className="text-xs md:text-base">
             Enter data for only one president, dean, school, and graduation
             date.
           </li>
-          <li>Specialization is optional.</li>
+          <li className="text-xs md:text-base">Specialization is optional.</li>
         </ol>
       </div>
-      <div className="absolute top-0 left-0 w-full h-full bg-black opacity-50 border-red-500 "></div>
+      {/* <div className="absolute top-0 left-0 w-full h-full bg-black opacity-50 border-red-500 "></div> */}
     </div>
   );
 };

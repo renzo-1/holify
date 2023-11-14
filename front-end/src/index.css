@@ -9,19 +9,19 @@
 
   color-scheme: light dark;
   color: rgba(255, 255, 255, 0.87);
-  background-color: #282828;
-
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   -webkit-text-size-adjust: 100%;
 }
+
 * {
   padding: 0;
   margin: 0;
   box-sizing: border-box;
 }
+
 body,
 #root {
   height: 100dvh;
@@ -97,6 +97,9 @@ body,
 }
 
 @layer base {
+  :root {
+    @apply bg-primary;
+  }
   h1 {
     @apply gradient-text font-extrabold text-4xl md:text-5xl lg:text-7xl lg:leading-normal;
   }

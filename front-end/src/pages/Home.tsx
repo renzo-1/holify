@@ -1,6 +1,8 @@
 import { hero } from "../assets";
 import { CSSTransition } from "react-transition-group";
 import { Pages } from "../constants";
+import { Hero3d } from "../components";
+import { Canvas } from "@react-three/fiber";
 
 const Home = ({ currPage }: { currPage: Pages }) => {
   return (
@@ -11,18 +13,22 @@ const Home = ({ currPage }: { currPage: Pages }) => {
       classNames="slide"
       unmountOnExit={true}
     >
-      <div className="w-full h-full text-center flex flex-col justify-center items-center gap-y-12 lg:gap-y-14 ">
-        <div className="">
-          <h1 className="">Embrace Blockchain Today</h1>
-          <h4 className="text-sn md:text-md lg:text-lg xl:text-2xl">
-            Seal your sucess with Holify
+      <div className="w-full h-full text-center flex justify-center md:justify-between items-center gap-y-12 lg:gap-y-14 flex-col md:flex-row">
+        <div className="text-left  space-y-8">
+          <h1 className="lg:max-w-[800px] leading-tight">
+            Certify and Verify Diplomas with Our Blockchain Tool
+          </h1>
+          <h4 className="text-s md:text-md lg:text-lg xl:text-xl lg:max-w-[500px]">
+            Join us in embracing the future of credential validation with a
+            simple, efficient, and tamper-proof system.
           </h4>
         </div>
-        <img
+        {/* <img
           src={hero}
           alt="hero"
-          className="w-full max-w-[200px] md:max-w-[250px] lg:max-w-[300px] xl:max-w-[420px]"
-        ></img>
+          className="w-full max-w-[200px] md:max-w-[250px] lg:max-w-[300px] xl:max-w-[500px] drop-shadow-lg"
+        ></img> */}
+        <Hero3d />
       </div>
     </CSSTransition>
   );
