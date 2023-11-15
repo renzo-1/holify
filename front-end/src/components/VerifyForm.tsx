@@ -5,26 +5,28 @@ import { useWeb3Context } from "../contexts/Web3";
 
 const VerifyForm = ({
   setVerifiedStudent,
+  setError,
 }: {
   setVerifiedStudent: Dispatch<SetStateAction<Student | undefined>>;
+  setError: Dispatch<SetStateAction<string | undefined>>;
 }) => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const { holifyAccount } = useWeb3Context() as Web3Context;
   const [tokenId, setTokenId] = useState<number | undefined>(undefined);
 
-  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
+  const handleVerification = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log(tokenId);
     if (!tokenId && tokenId != 0) return;
     setIsLoading(true);
     try {
       const contract = await getContract();
       const data = (await contract.methods.verify(tokenId!).call()) as Student;
-      console.log(data);
       setVerifiedStudent(data);
+      setError(undefined);
     } catch (e) {
+      setVerifiedStudent(undefined);
+      setError("Unverified Diploma");
       console.error(e);
-      //   alert("You are not authorised to create a Certificate");
     }
     setIsLoading(false);
   };
@@ -36,7 +38,7 @@ const VerifyForm = ({
     <>
       <form
         className="w-full md:space-x-5 space-y-5 md:space-y-0 flex flex-col md:flex-row justify-center items-center"
-        onSubmit={handleSubmit}
+        onSubmit={handleVerification}
       >
         <input
           id="tokenId"

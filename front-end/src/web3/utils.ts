@@ -15,7 +15,6 @@ export const connect2Metamask = async () => {
   if (window.ethereum && window.ethereum.isMetaMask) {
     window.web3 = new Web3Eth(contractProvider);
     const acc = await getHolifyAccAdd();
-    localStorage.setItem("currAccAdd", acc);
     return acc;
   } else {
     alert("Please install MetaMask on your browser :D");

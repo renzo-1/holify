@@ -9,8 +9,10 @@ import { connect2Metamask, getHolifyAccAdd } from "../web3/utils";
 import { useWeb3Context } from "../contexts/Web3";
 
 const Nav = ({
+  currPage,
   setCurrPage,
 }: {
+  currPage: Pages;
   setCurrPage: Dispatch<SetStateAction<Pages>>;
 }) => {
   const { holifyAccount, setHolifyAccount } = useWeb3Context() as Web3Context;
@@ -32,22 +34,29 @@ const Nav = ({
 
   return (
     <nav className="absolute w-full top-0 left-0 py-7 lg:py-12 z-[9999]">
+      {/* <nav className="pt-7 lg:pt-12 z-[9999] h-fit"> */}
       <ul className="flex flex-col md:flex-row justify-between items-center">
         <ul className="flex justify-center items-center mb-10 md:mb-0  gap-x-7 md:gap-x-10">
           <li
-            className="font-bold cursor-pointer text-sm md:text-sm lg:text-base xl:text-2xl"
+            className={`${
+              currPage === Pages.Home && "border-b-2"
+            } font-bold cursor-pointer text-sm md:text-sm lg:text-base xl:text-2xl selectedNav relative`}
             onClick={() => setCurrPage(Pages.Home)}
           >
             Holify
           </li>
           <li
-            className="text-sm cursor-pointer md:text-sm xl:text-xl"
+            className={`${
+              currPage === Pages.Create && "border-b-2"
+            } text-sm cursor-pointer md:text-sm xl:text-xl selectedNav relative `}
             onClick={() => setCurrPage(Pages.Create)}
           >
             Create
           </li>
           <li
-            className="text-sm cursor-pointer md:text-sm xl:text-xl"
+            className={`${
+              currPage === Pages.Verify && "border-b-2"
+            } text-sm cursor-pointer md:text-sm xl:text-xl selectedNav relative `}
             onClick={() => setCurrPage(Pages.Verify)}
           >
             Verify

@@ -4,6 +4,7 @@ import { VerificationResult, VerifyForm } from "../components";
 import { useState } from "react";
 const Verify = ({ currPage }: { currPage: Pages }) => {
   const [verifiedStudent, setVerifiedStudent] = useState<Student>();
+  const [error, setError] = useState<string>();
 
   return (
     <CSSTransition
@@ -12,12 +13,16 @@ const Verify = ({ currPage }: { currPage: Pages }) => {
       classNames="slide"
       unmountOnExit={true}
     >
-      <div className="w-full h-full text-center flex flex-col justify-center items-center gap-y-7 ">
+      <div className="w-full min-h-[900px]  text-center flex flex-col justify-center items-center gap-y-7 ">
         <h1>Verify a Diploma</h1>
-        <VerifyForm setVerifiedStudent={setVerifiedStudent} />
+        <VerifyForm
+          setVerifiedStudent={setVerifiedStudent}
+          setError={setError}
+        />
         {verifiedStudent && (
           <VerificationResult verifiedStudent={verifiedStudent} />
         )}
+        {error && <h2 className="font-bold text-red-500">Unverified Token!</h2>}
       </div>
     </CSSTransition>
   );

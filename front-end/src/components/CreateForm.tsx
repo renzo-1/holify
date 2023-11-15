@@ -33,6 +33,7 @@ const CreateForm = ({
   const [students, setStudents] = useState<Student[]>();
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [school, setSchool] = useState<School>();
+  const [error, setError] = useState<string>();
   const { holifyAccount } = useWeb3Context() as Web3Context;
   const inputFileRef = useRef<HTMLInputElement | null>(null);
   const formRef = useRef<HTMLFormElement>(null);
@@ -53,7 +54,7 @@ const CreateForm = ({
         });
     });
   };
-  
+
   const handleMint = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setIsLoading(true);
@@ -61,6 +62,7 @@ const CreateForm = ({
       try {
         const contract = await getContract();
         const graduates: Certificate[] = [];
+       
         for (let student of students) {
           const studentData = {
             studentName: student.studentName.toString(),
@@ -71,6 +73,15 @@ const CreateForm = ({
               parseInt(student.gradDate)
             ).toString(),
           };
+          if (
+            !studentData.studentName ||
+            !studentData.studentNum ||
+            !studentData.program ||
+            !studentData.specialization ||
+            !studentData.gradDate
+          ) {
+            throw new Error("Data is incomplete. Please check the excel data!");
+          }
 
           await contract.methods
             .mint(
@@ -95,10 +106,12 @@ const CreateForm = ({
         setGraduates(graduates!);
         handleRemoveFile();
       } catch (e) {
-        console.error(e);
+        setError("e");
+        handleRemoveFile();
         //   alert("You are not authorised to create a Certificate");
       }
     }
+
     setIsLoading(false);
   };
 
@@ -212,6 +225,7 @@ const CreateForm = ({
           </button>
         )}
       </form>
+      {error && <h2 className="font-bold text-red-500">{error}</h2>}
     </>
   );
 };

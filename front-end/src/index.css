@@ -24,8 +24,10 @@
 
 body,
 #root {
+  min-height: 100dvh;
   height: 100dvh;
   position: relative;
+  overflow-x: hidden;
 }
 
 .gradient-text {
@@ -94,6 +96,21 @@ body,
 
 #tokenId {
   appearance: textfield; /* Firefox */
+}
+
+.selectedNav::before {
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: 0;
+  bottom: 0;
+  border-bottom: 2px solid white;
+  width: 0px;
+  transition: all 0.3s;
+}
+
+.selectedNav:hover::before {
+  width: 100%;
 }
 
 @layer base {
