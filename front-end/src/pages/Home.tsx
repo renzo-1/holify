@@ -13,7 +13,7 @@ const Home = ({ currPage }: { currPage: Pages }) => {
       classNames="slide"
       unmountOnExit={true}
     >
-      <div className="w-full h-full text-center flex justify-center md:justify-between items-center gap-y-12 lg:gap-y-14 flex-col md:flex-row">
+      <div className="w-full min-h-[900px] text-center flex justify-center md:justify-between items-center gap-y-12 lg:gap-y-14 flex-col md:flex-row">
         <div className="text-left  space-y-8">
           <h1 className="lg:max-w-[800px] leading-tight">
             Certify and Verify Diplomas with Our Blockchain Tool
@@ -28,7 +28,9 @@ const Home = ({ currPage }: { currPage: Pages }) => {
           alt="hero"
           className="w-full max-w-[200px] md:max-w-[250px] lg:max-w-[300px] xl:max-w-[500px] drop-shadow-lg"
         ></img> */}
-        <Hero3d />
+        <div className="w-full h-full absolute top-1/2 left-1/4 -translate-y-1/2 ">
+          <Hero3d />
+        </div>
       </div>
     </CSSTransition>
   );
