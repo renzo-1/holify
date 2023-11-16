@@ -62,7 +62,7 @@ const CreateForm = ({
       try {
         const contract = await getContract();
         const graduates: Certificate[] = [];
-       
+
         for (let student of students) {
           const studentData = {
             studentName: student.studentName.toString(),
@@ -73,15 +73,6 @@ const CreateForm = ({
               parseInt(student.gradDate)
             ).toString(),
           };
-          if (
-            !studentData.studentName ||
-            !studentData.studentNum ||
-            !studentData.program ||
-            !studentData.specialization ||
-            !studentData.gradDate
-          ) {
-            throw new Error("Data is incomplete. Please check the excel data!");
-          }
 
           await contract.methods
             .mint(
@@ -104,9 +95,10 @@ const CreateForm = ({
           });
         }
         setGraduates(graduates!);
+        setError(undefined);
         handleRemoveFile();
       } catch (e) {
-        setError("e");
+        setError(e as string);
         handleRemoveFile();
         //   alert("You are not authorised to create a Certificate");
       }
@@ -122,11 +114,12 @@ const CreateForm = ({
 
   const readUploadFile = (e: ChangeEvent<HTMLInputElement>) => {
     e.preventDefault();
+    setError(undefined);
+
     // console.log(e.target.files);
     if (e.target.files) {
       const reader = new FileReader();
       setUploadedFile(e.target.files[0]);
-
       reader.onload = (e) => {
         const data = e.target?.result;
         const workbook = read(data, { type: "array" });
@@ -135,7 +128,9 @@ const CreateForm = ({
         const rowData: Row[] = utils.sheet_to_json(worksheet);
         console.log("rowData", rowData);
         let schoolInfo: School;
-        const gradsArr: Student[] = rowData.map((row: Row) => {
+        const gradsArr: Student[] = [];
+
+        for (let row of rowData) {
           //   console.log(row);
           if (row.president && row.dean && row.school) {
             schoolInfo = {
@@ -143,19 +138,34 @@ const CreateForm = ({
               dean: row.dean,
               school: row.school,
             };
-            // console.log("school info", schoolInfo);
             setSchool(schoolInfo);
           }
 
-          return {
-            studentName: row.studentName,
-            studentNum: row.studentNum,
-            program: row.program,
-            specialization: row?.specialization,
-            gradDate: row.gradDate,
-          };
-        });
-        setStudents(gradsArr);
+          if (
+            !row.studentName ||
+            !row.studentNum ||
+            !row.program ||
+            !row.gradDate
+          ) {
+            setError("Data is incomplete. Please check the excel data!");
+            handleRemoveFile();
+            break;
+          } else {
+            gradsArr.push({
+              studentName: row.studentName,
+              studentNum: row.studentNum,
+              program: row.program,
+              specialization: row?.specialization,
+              gradDate: row.gradDate,
+            });
+          }
+        }
+        if (!school?.president || !school?.dean || !school?.school) {
+          setError("Data is incomplete. Please check the excel data!");
+          handleRemoveFile();
+        } else {
+          setStudents(gradsArr);
+        }
       };
 
       reader.readAsArrayBuffer(e.target.files[0]);
@@ -214,7 +224,7 @@ const CreateForm = ({
           onChange={readUploadFile}
           className="hidden"
         />
-        {students?.length! > 0 && (
+        {students?.length! > 0 && !error && (
           <button
             disabled={isLoading}
             className={`${

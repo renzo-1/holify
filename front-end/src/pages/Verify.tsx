@@ -13,7 +13,7 @@ const Verify = ({ currPage }: { currPage: Pages }) => {
       classNames="slide"
       unmountOnExit={true}
     >
-      <div className="w-full min-h-[900px]  text-center flex flex-col justify-center items-center gap-y-7 ">
+      <div className="w-full h-full min-h-[600px] text-center flex flex-col justify-center items-center gap-y-7 ">
         <h1>Verify a Diploma</h1>
         <VerifyForm
           setVerifiedStudent={setVerifiedStudent}

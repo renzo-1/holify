@@ -24,7 +24,8 @@
 
 body,
 #root {
-  min-height: 100dvh;
+  min-height: 600px;
+  max-height: 100dvh;
   height: 100dvh;
   position: relative;
   overflow-x: hidden;

@@ -5,7 +5,7 @@ import { useState } from "react";
 const Create = ({ currPage }: { currPage: Pages }) => {
   const [isTutorial, setIsTutorial] = useState<boolean>(false);
   const [graduates, setGraduates] = useState<Certificate[]>();
-  
+
   return (
     <CSSTransition
       in={currPage === Pages.Create}
@@ -13,7 +13,7 @@ const Create = ({ currPage }: { currPage: Pages }) => {
       classNames="slide"
       unmountOnExit={true}
     >
-      <div className="absolute left-0 top-0 px-4 w-full min-h-[900px]  text-center flex flex-col justify-center items-center gap-y-7 md:gap-y-8">
+      <div className="px-4 w-full h-full  min-h-[600px]  text-center flex flex-col justify-center items-center gap-y-7 md:gap-y-8">
         <h1>Create diplomas</h1>
 
         {graduates ? (

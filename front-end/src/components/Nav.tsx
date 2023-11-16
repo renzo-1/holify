@@ -34,7 +34,7 @@ const Nav = ({
 
   return (
     <nav className="absolute w-full top-0 left-0 py-7 lg:py-12 z-[9999]">
-      {/* <nav className="pt-7 lg:pt-12 z-[9999] h-fit"> */}
+      {/* <nav className="mt-10 z-[99999] block"> */}
       <ul className="flex flex-col md:flex-row justify-between items-center">
         <ul className="flex justify-center items-center mb-10 md:mb-0  gap-x-7 md:gap-x-10">
           <li
