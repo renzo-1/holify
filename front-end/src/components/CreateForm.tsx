@@ -9,6 +9,7 @@ import {
 import { utils, read } from "xlsx";
 import { useWeb3Context } from "../contexts/Web3";
 import { getContract } from "../web3/utils";
+import { Web3ContractError } from "web3";
 
 const excelDateToDDMonthYY = (serialDate: number): string => {
   const baseDate = new Date(1899, 11, 30); // Excel's base date (month is zero-based in JavaScript)
@@ -33,7 +34,7 @@ const CreateForm = ({
   const [students, setStudents] = useState<Student[]>();
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [school, setSchool] = useState<School>();
-  const [error, setError] = useState<string>();
+  const [error, setError] = useState<any>();
   const { holifyAccount } = useWeb3Context() as Web3Context;
   const inputFileRef = useRef<HTMLInputElement | null>(null);
   const formRef = useRef<HTMLFormElement>(null);
@@ -97,19 +98,66 @@ const CreateForm = ({
         setGraduates(graduates!);
         setError(undefined);
         handleRemoveFile();
-      } catch (e) {
-        setError(e as string);
+      } catch (e: any) {
+        setError(
+          `Error: ${e.message}. Please Make sure you are connected to Metamask.`
+        );
         handleRemoveFile();
+        setIsLoading(false);
+
         //   alert("You are not authorised to create a Certificate");
       }
     }
-
     setIsLoading(false);
   };
 
   const handleFileButton = () => {
     /*Collecting node-element and performing click*/
     inputFileRef.current?.click();
+  };
+  const formatCertificate = (excelData: Row[]) => {
+    const gradsArr: Student[] = [];
+    let schoolInfo: School | undefined;
+    let isError = false;
+    let i = 0;
+
+    for (let row of excelData) {
+      if (i == 0) {
+        if (row.president && row.dean && row.school) {
+          schoolInfo = {
+            president: row.president,
+            dean: row.dean,
+            school: row.school,
+          };
+        } else {
+          console.error("err");
+          isError = true;
+          break;
+        }
+      }
+
+      if (
+        !row.studentName ||
+        !row.studentNum ||
+        !row.program ||
+        !row.gradDate
+      ) {
+        isError = true;
+        console.error("err");
+
+        break;
+      } else {
+        gradsArr.push({
+          studentName: row.studentName,
+          studentNum: row.studentNum,
+          program: row.program,
+          specialization: row?.specialization,
+          gradDate: row.gradDate,
+        });
+      }
+      i++;
+    }
+    return { isError, gradsArr, schoolInfo };
   };
 
   const readUploadFile = (e: ChangeEvent<HTMLInputElement>) => {
@@ -127,43 +175,13 @@ const CreateForm = ({
         const worksheet = workbook.Sheets[sheetName];
         const rowData: Row[] = utils.sheet_to_json(worksheet);
         console.log("rowData", rowData);
-        let schoolInfo: School;
-        const gradsArr: Student[] = [];
 
-        for (let row of rowData) {
-          //   console.log(row);
-          if (row.president && row.dean && row.school) {
-            schoolInfo = {
-              president: row.president,
-              dean: row.dean,
-              school: row.school,
-            };
-            setSchool(schoolInfo);
-          }
+        const { isError, gradsArr, schoolInfo } = formatCertificate(rowData);
 
-          if (
-            !row.studentName ||
-            !row.studentNum ||
-            !row.program ||
-            !row.gradDate
-          ) {
-            setError("Data is incomplete. Please check the excel data!");
-            handleRemoveFile();
-            break;
-          } else {
-            gradsArr.push({
-              studentName: row.studentName,
-              studentNum: row.studentNum,
-              program: row.program,
-              specialization: row?.specialization,
-              gradDate: row.gradDate,
-            });
-          }
-        }
-        if (!school?.president || !school?.dean || !school?.school) {
+        if (isError) {
           setError("Data is incomplete. Please check the excel data!");
-          handleRemoveFile();
         } else {
+          setSchool(schoolInfo);
           setStudents(gradsArr);
         }
       };

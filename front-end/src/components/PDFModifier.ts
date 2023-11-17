@@ -49,7 +49,6 @@ async function modifyPdf(graduates: Certificate[]) {
     // PRESIDENT
     drawText(currPage, graduate.president, 20, 240, -210);
     drawText(currPage, "University President", 14, 250, -230);
-    console.log(currPage);
     i++;
   }
 
