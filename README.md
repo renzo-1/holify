@@ -1,5 +1,5 @@
 Holify
-A blockchain tool to certify and verify Holy Ange University diplomas.
+a blockchain tool to certify and verify Holy Angel University diplomas.
 ![image](https://github.com/renzo-1/holify/assets/125778691/e03bb1d9-4c1f-4e39-969a-539b147424fb)
 
 How to use:
